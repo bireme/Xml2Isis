@@ -112,7 +112,8 @@ public class Xml2Isis {
 
         files = directory.listFiles(new MyFileFilter(regExp));
         tree = new XPathTree(new File(table));
-        writer = new IsisWriter(outDb, dbEncoding, removableFieldTags);
+        writer = new IsisWriter(outDb, dbEncoding, removableFieldTags,
+                                            IsisWriter.MEDLINE_MAX_FIELD_SIZE);
         time.start();
 
         for (File curFile : files) {
