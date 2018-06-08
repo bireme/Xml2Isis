@@ -39,7 +39,8 @@ public class Xml2Isis {
                          +  "                [fileEncoding=<encoding>]\n"
                          +  "                [dbEncoding=<encoding>]\n"
                          +  "                [tell=<number>]\n"
-                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]");
+                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]"
+                         +  "                [maxFieldLength=<len>]");
         System.exit(1);
     }
 
@@ -68,6 +69,7 @@ public class Xml2Isis {
         StaxXmlWalker walker;
         int tell = 1;
         HashSet<Integer> removableFieldTags = new HashSet<>();
+        int maxFieldLength = IsisWriter.MEDLINE_MAX_FIELD_SIZE;
         int cur = 1;
 
         for (int counter = 0; counter < args.length; counter++) {
@@ -95,6 +97,8 @@ public class Xml2Isis {
                 for (String spl: split) {
                   removableFieldTags.add(Integer.parseInt(spl));
                 }
+            } else if (parm.startsWith("maxFieldLength=")) {
+                maxFieldLength = Integer.parseInt(parm.substring(15));
             } else {
                 usage();
             }
@@ -113,7 +117,7 @@ public class Xml2Isis {
         files = directory.listFiles(new MyFileFilter(regExp));
         tree = new XPathTree(new File(table));
         writer = new IsisWriter(outDb, dbEncoding, removableFieldTags,
-                                            IsisWriter.MEDLINE_MAX_FIELD_SIZE);
+                                                                maxFieldLength);
         time.start();
 
         for (File curFile : files) {

@@ -16,6 +16,7 @@ import java.util.HashSet;
  */
 public class IsisWriter {
     static final int DEFAULT_FILNAME_FIELD = 999;
+    static final int DEFAULT_MAX_FIELD_LEN = 2048;
     static final int MEDLINE_MAX_FIELD_SIZE = 500;
 
     private final MasterFactory factory;
@@ -25,17 +26,17 @@ public class IsisWriter {
     private boolean tooManyFields;
     private HashSet<Integer> removableFields; // tags of fields that will be removed
                                               // if number of Fields > max (32k)
-    private int maxFldSize;
+    private int maxFldLength;
 
     IsisWriter(final String dbName,
                final String encoding) throws BrumaException {
-        this(dbName, encoding, new HashSet<Integer>(), 2048);
+        this(dbName, encoding, new HashSet<Integer>(), DEFAULT_MAX_FIELD_LEN);
     }
 
     IsisWriter(final String dbName,
                final String encoding,
                final HashSet<Integer> removableFields,
-               final int maxFldSize) throws BrumaException {
+               final int maxFldLength) throws BrumaException {
         if (dbName == null) {
             throw new IllegalArgumentException();
         }
@@ -51,7 +52,7 @@ public class IsisWriter {
         this.dbName = dbName;
         this.tooManyFields = false;
         this.removableFields = removableFields;
-        this.maxFldSize = maxFldSize;
+        this.maxFldLength = maxFldLength;
     }
 
     void close() throws BrumaException {
@@ -73,7 +74,7 @@ public class IsisWriter {
             throw new IllegalArgumentException("tag <= 0");
         }
         String fld = (field == null) ? "" :
-          field.substring(0, Math.min(maxFldSize, field.length()));
+          field.substring(0, Math.min(maxFldLength, field.length()));
 
         if (record.getNvf() < 32768) { // max allowed number of fields
             record.addField(tag, fld);
