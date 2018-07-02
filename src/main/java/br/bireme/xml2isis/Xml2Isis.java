@@ -39,8 +39,8 @@ public class Xml2Isis {
                          +  "                [fileEncoding=<encoding>]\n"
                          +  "                [dbEncoding=<encoding>]\n"
                          +  "                [tell=<number>]\n"
-                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]"
-                         +  "                [maxFieldLength=<len>]");
+                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]  => delete those fields if there are too many fields"
+                         +  "                [maxFieldLength=<len>] => limit the size of removableFieldTags if record size is too big");
         System.exit(1);
     }
 

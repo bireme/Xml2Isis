@@ -58,7 +58,7 @@ class StaxXmlWalker {
         this.xpath = xpath;
         this.writer = writer;
         this.parser = XMLInputFactory.newInstance().createXMLStreamReader(
-                               new ReplaceBufferedReader(new FileReader(xml)));
+                            new ReplaceBufferedReader(new FileReader(xml)));
         this.fileName = xml.getCanonicalPath();
         this.createMissFld = createMissFld;
         this.createFileNameFld = false;

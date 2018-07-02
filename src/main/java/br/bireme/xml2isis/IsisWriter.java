@@ -18,15 +18,17 @@ public class IsisWriter {
     static final int DEFAULT_FILNAME_FIELD = 999;
     static final int DEFAULT_MAX_FIELD_LEN = 2048;
     static final int MEDLINE_MAX_FIELD_SIZE = 500;
+    static final int MAX_FFI_RECORD_SIZE = 1048576;
 
     private final MasterFactory factory;
     private final String dbName;
-    private Master master;
-    private Record record;
-    private boolean tooManyFields;
-    private HashSet<Integer> removableFields; // tags of fields that will be removed
+    private final String encoding;
+    private final Master master;
+    private final Record record;
+    private final HashSet<Integer> removableFields; // tags of fields that will be removed
                                               // if number of Fields > max (32k)
-    private int maxFldLength;
+    private final int maxFldLength;
+    private boolean tooManyFields;
 
     IsisWriter(final String dbName,
                final String encoding) throws BrumaException {
@@ -48,7 +50,8 @@ public class IsisWriter {
             factory.setEncoding(encoding);
         }
         master = (Master)factory.create();
-        record = null;
+        record = new Record();
+        this.encoding = encoding;
         this.dbName = dbName;
         this.tooManyFields = false;
         this.removableFields = removableFields;
@@ -58,14 +61,12 @@ public class IsisWriter {
     void close() throws BrumaException {
         if (master != null) {
             master.close();
-            master = null;
         }
     }
 
     void newRecord() throws BrumaException {
-        if (record == null) {
-            record = new Record();
-        }
+        record.deleteFields();
+        record.setMfn(0);
     }
 
     void addField(final int tag,
@@ -73,8 +74,7 @@ public class IsisWriter {
         if (tag <= 0) {
             throw new IllegalArgumentException("tag <= 0");
         }
-        String fld = (field == null) ? "" :
-          field.substring(0, Math.min(maxFldLength, field.length()));
+        final String fld = (field == null) ? "" : field;
 
         if (record.getNvf() < 32768) { // max allowed number of fields
             record.addField(tag, fld);
@@ -119,9 +119,6 @@ public class IsisWriter {
             addField(DEFAULT_FILNAME_FIELD, fileName);
         }
 
-/*System.out.println("-----------------------------------------------------------");
-System.out.println(record);
-System.out.println("-----------------------------------------------------------");*/
         if (hasFields()) {
             if (tooManyFields) {
                 record.deleteFields();
@@ -129,11 +126,37 @@ System.out.println("-----------------------------------------------------------"
                 tooManyFields = false;
                 throw new BrumaException("too many fields");
             } else {
+                if (record.getRecordLength(encoding, true) >= MAX_FFI_RECORD_SIZE) {
+                    trimFields();
+                }
+                if (record.getRecordLength(encoding, true) >= MAX_FFI_RECORD_SIZE) {
+                  throw new BrumaException("record too big");
+                }
+                trimFields();
                 master.writeRecord(record);
             }
         }
         record.deleteFields();
         record.setMfn(0);
+    }
+
+    private void trimFields() throws BrumaException {
+      final Record rec = new Record();
+      for (Field fld: record) {
+        rec.addField(fld);
+      }
+
+      record.deleteFields();
+
+      for (Field fld: rec) {
+          final int id = fld.getId();
+          String content = fld.getContent();
+
+          if ((removableFields.contains(id)) && (content.length() > maxFldLength)) {
+            content = content.substring(0, maxFldLength);
+          }
+          record.addField(id, content);
+      }
     }
 
     boolean hasFields() {
