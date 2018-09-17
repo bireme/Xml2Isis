@@ -1,0 +1,193 @@
+# Tabulacao dos campos extraidos do XML da NLM
+# 201008
+
+
+# DateCreated - create field 100
+# 1001	/PubmedArticleSet/PubmedArticle/MedlineCitation/DateCreated/Year
+# 1002	/PubmedArticleSet/PubmedArticle/MedlineCitation/DateCreated/Month
+# 1003	/PubmedArticleSet/PubmedArticle/MedlineCitation/DateCreated/Day
+
+1001    /PubmedArticleSet/PubmedArticle/PubmedData/History/PubMedPubDate/Year
+1002    /PubmedArticleSet/PubmedArticle/PubmedData/History/PubMedPubDate/Month
+1003    /PubmedArticleSet/PubmedArticle/PubmedData/History/PubMedPubDate/Day
+
+
+# DateRevised - create field 103
+1031    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateRevised/Year
+1032    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateRevised/Month
+1033    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateRevised/Day
+
+# Chemical - create field 261
+# 2611    /PubmedArticleSet/PubmedArticle/MedlineCitation/ChemicalList/Chemical/CASRegistryNumber
+2612    /PubmedArticleSet/PubmedArticle/MedlineCitation/ChemicalList/Chemical/NameOfSubstance
+2613    /PubmedArticleSet/PubmedArticle/MedlineCitation/ChemicalList/Chemical/RegistryNumber
+
+# ISSN - create field 301
+301	/PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/ISSN
+
+# ISSNLinking - create field 302
+302     /PubmedArticleSet/PubmedArticle/MedlineCitation/MedlineJournalInfo/ISSNLinking
+
+# MedlineTA - create field 305
+305     /PubmedArticleSet/PubmedArticle/MedlineCitation/MedlineJournalInfo/MedlineTA
+
+# Language - create field 306
+306     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Language
+
+# Country - create field 307
+307     /PubmedArticleSet/PubmedArticle/MedlineCitation/MedlineJournalInfo/Country
+
+# Title - create field 308
+308     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/Title
+
+# ISOAbbreviation - create field 309
+309     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/ISOAbbreviation
+
+# CitationSubSet - create field 324
+324	/PubmedArticleSet/PubmedArticle/MedlineCitation/CitationSubset
+
+# GeneSymbol - create field 328
+328     /PubmedArticleSet/PubmedArticle/MedlineCitation/GeneSymbolList/GeneSymbol
+
+# NlmDcmsID - create field 350
+350     /PubmedArticleSet/PubmedArticle/MedlineCitation/NlmDcmsID
+
+
+# **************************************************************************************************************
+# Campo temporario necessario para ajudar a extrair Descritor
+2000     /PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList
+
+# MeshHeading - create field 351
+3511     /PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading/DescriptorName@MajorTopicYN
+3512     /PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading/DescriptorName
+3513     /PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading/QualifierName@MajorTopicYN
+3514     /PubmedArticleSet/PubmedArticle/MedlineCitation/MeshHeadingList/MeshHeading/QualifierName
+
+# **************************************************************************************************************
+
+
+
+# ArticleTitle - create field 352
+352     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ArticleTitle
+
+# Pagination - create field 353
+3531    /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Pagination/StartPage
+3532    /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Pagination/EndPage
+3533    /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Pagination/MedlinePgn
+
+# PubDate - create field 354
+3541     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PubDate/Year
+3542     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PubDate/Month
+3543     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PubDate/Day
+3544     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PubDate/Season
+3545     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PubDate/MedlineDate
+3549     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/PrintYN_2004
+
+# ArticleDate - create field 355  ******************** NAO USA??????????????
+3551     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ArticleDate/Year
+3552     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ArticleDate/Month
+3553     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ArticleDate/Day
+3559     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ArticleDate/DataType
+
+# PublicationType - create field 360
+360      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/PublicationTypeList/PublicationType
+
+# Abstract - create field 370
+3701     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Abstract/AbstractText
+3702     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Abstract/CopyrightInformation
+3703     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Abstract/AbstractText@Label
+# desabilitado em 20141217
+# 3704     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Abstract/AbstractText@NlmCategory
+
+# Author - create field 372
+3721     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/FirstName
+3722     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/MiddleName
+3723     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/LastName
+3724     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/Initials
+
+# Incluido em 20141217 - <Identifier Source="ORCID"> - Pode estar presente em v372 e v376
+3730     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/Identifier
+
+# utilizado para master de browser
+3725     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/Suffix
+3726     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/ForeName
+3727     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/AffiliationInfo/Affiliation
+# Incluido em 20141217 - <Identifier Source="Ringgold">
+3740     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/AffiliationInfo/Identifier
+
+
+
+# CollectiveName ou CorporateName - 376 Campo novo a partir desse processamento
+3729     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/CollectiveName
+
+# Issue - create field 373
+373      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/Issue
+
+# InvestigatorList - Affiliation - create field 375
+3751    /PubmedArticleSet/PubmedArticle/MedlineCitation/InvestigatorList/Investigator/LastName
+3752    /PubmedArticleSet/PubmedArticle/MedlineCitation/InvestigatorList/Investigator/ForeName
+3753    /PubmedArticleSet/PubmedArticle/MedlineCitation/InvestigatorList/Investigator/Initials
+3754    /PubmedArticleSet/PubmedArticle/MedlineCitation/InvestigatorList/Investigator/Affiliation
+
+# NumberOfReferences - create field 377
+377      /PubmedArticleSet/PubmedArticle/MedlineCitation/NumberOfReferences
+
+# Affiliation - create field 378
+#378      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Affiliation
+#378      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/AuthorList/Author/Affiliation
+
+# PersonalNameSubject - create field 379
+3791     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/FirstName
+3792     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/MiddleName
+3793     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/LastName
+3794     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/Initials
+3795     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/Suffix
+3796     /PubmedArticleSet/PubmedArticle/MedlineCitation/PersonalNameSubjectList/PersonalNameSubject/ForeName
+
+# VernacularTitle - create field 380  ******************** NAO USA??????????????
+380      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/VernacularTitle
+
+# Volume - create field 381
+381      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/Journal/JournalIssue/Volume
+
+# DateCompleted - create field 383
+3831    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateCompleted/Year
+3832    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateCompleted/Month
+3833    /PubmedArticleSet/PubmedArticle/MedlineCitation/DateCompleted/Day
+
+# <Keyword - create field 385
+851    /PubmedArticleSet/PubmedArticle/MedlineCitation/KeywordList/Keyword
+
+# CommentOn - create field 440
+4401	/PubmedArticleSet/PubmedArticle/MedlineCitation/CommentsCorrectionsList/CommentsCorrections/RefSource
+4402	/PubmedArticleSet/PubmedArticle/MedlineCitation/CommentsCorrectionsList/CommentsCorrections@RefType
+4403	/PubmedArticleSet/PubmedArticle/MedlineCitation/CommentsCorrectionsList/CommentsCorrections/Note
+4404	/PubmedArticleSet/PubmedArticle/MedlineCitation/CommentsCorrectionsList/CommentsCorrections/PMID
+
+# NlmDcmsID - create field 665
+#665      /PubmedArticleSet/PubmedArticle/DeleteCitation/NlmDcmsID
+
+
+# Status - create field 668
+668      /PubmedArticleSet/PubmedArticle/MedlineCitation@Status
+
+# DataBankName - create field 700
+700      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/DataBankList/DataBank/DataBankName
+
+# AccessionNumber - create field 701
+701      /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/DataBankList/DataBank/AccessionNumberList/AccessionNumber
+
+# OtherID - create field 967
+9671     /PubmedArticleSet/PubmedArticle/MedlineCitation/OtherID
+9679     /PubmedArticleSet/PubmedArticle/MedlineCitation/OtherID@Source
+
+# ELocationID - create field 968
+9681     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ELocationID
+9689     /PubmedArticleSet/PubmedArticle/MedlineCitation/Article/ELocationID@EIdType
+
+# PMID - create field 969
+969     /PubmedArticleSet/PubmedArticle/MedlineCitation/PMID
+
+# PMID - create field 667
+#667    /PubmedArticleSet/DeleteCitation/PMID
+

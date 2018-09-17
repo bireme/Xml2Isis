@@ -13,7 +13,7 @@ import java.util.List;
  * 'subfield' do campo 'hostTag'.
  *
  * @author Heitor Barbieri
- * @date 19/09/2010
+ * date 19/09/2010
  */
 public class ToSubfield {
     public static void convert(final String dbName,

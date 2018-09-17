@@ -192,9 +192,19 @@ public class XPathTree {
             final Map<String, TreeElement> children = current.getChildren();
             final int num = (children == null) ? 0 : children.size();
 
-            if (num == 1) { // Só não marca se tiver um unico filho.
-                setRecSave(children.values().iterator().next());
-            } else {
+            if (num == 0) {  // Não tem filho, então salva toda vez que chegar a este elemento
+                current.setRecSave(true);
+            } else if (num == 1) { // Tem um só filho
+                final TreeElement child = children.values().iterator().next();
+                final Map<String, TreeElement> grandChildren = child.getChildren();
+                final int num2 = (grandChildren == null) ? 0 : grandChildren.size();
+
+                if (num2 == 0) { // Se filho não tem descendentes então salva toda vez que chegar a este elemento
+                    current.setRecSave(true);
+                } else { // Percorre recursivamente
+                    setRecSave(children.values().iterator().next());
+                }
+            } else { // Tem mais de um filho, então salva toda vez que chegar a este elemento
                 current.setRecSave(true);
             }
         }

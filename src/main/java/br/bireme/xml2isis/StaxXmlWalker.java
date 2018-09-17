@@ -142,7 +142,7 @@ class StaxXmlWalker {
     }
 
     void convert() throws XMLStreamException, BrumaException {
-        String name = null;
+        String name;
         final XPathTree.TreeElement root = xpath.getRoot();
         final int saveLevel = xpath.getSaveLevel();
         XPathTree.TreeElement current = null;
@@ -166,6 +166,7 @@ class StaxXmlWalker {
                     curLevel++;
                     if (curLevel < skipLevel) {
                         qname = parser.getName();
+System.out.println("abrindo:" + qname + " curLevel:" + curLevel);
                         prefix = qname.getPrefix();
                         name = (prefix.isEmpty() ?  "" : (prefix + ":"))
                                                          + qname.getLocalPart();
@@ -233,6 +234,7 @@ class StaxXmlWalker {
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:
+System.out.println("fechando: curLevel:" + curLevel);
                     if (curLevel < skipLevel) {
                         if (skipLevel == Integer.MAX_VALUE) {
                             saveContent(current);
@@ -302,8 +304,6 @@ class StaxXmlWalker {
 
     private void saveContent(final XPathTree.TreeElement current)
                                                          throws BrumaException {
-        assert current != null;
-
         final int tag;
         final StringBuilder builder;
 

@@ -30,16 +30,17 @@ public class Xml2Isis {
     private Xml2Isis() { }
 
     private static void usage() {
-        System.err.println("usage: Xml2Isis fileDir=<directory>\n"
-                         +  "                xmlRegExp=<expression>\n"
-                         +  "                convTable=<file>\n"
-                         +  "                outDb=<name>\n"
-                         +  "                [--createMissingFields]\n"
-                         +  "                [--createFileNameField]\n"
-                         +  "                [fileEncoding=<encoding>]\n"
-                         +  "                [dbEncoding=<encoding>]\n"
-                         +  "                [tell=<number>]\n"
-                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]  => delete those fields if there are too many fields"
+        System.err.println("Application to import documents from xml files into Isis database records.\n");
+        System.err.println("usage: Xml2Isis fileDir=<directory> => xml file directory\n"
+                         +  "                xmlRegExp=<expression> => regular expression used to filter the input xml files\n"
+                         +  "                convTable=<file> => file having the convertion from xml elements into isis record fields\n"
+                         +  "                outDb=<name> => output Isis database\n"
+                         +  "                [--createMissingFields] => create an empty field if the xml element was not found\n"
+                         +  "                [--createFileNameField] => create a record field with the name of the file from where the document comes\n"
+                         +  "                [fileEncoding=<encoding>] => the encoding of the xml files \n"
+                         +  "                [dbEncoding=<encoding>] => the encoding of the output database\n"
+                         +  "                [tell=<number>] => prints an message each <number> documents processed\n"
+                         +  "                [removableFieldTags=<tag1>,<tag2>,...,<tagN>]  => delete those fields if there are too many fields\n"
                          +  "                [maxFieldLength=<len>] => limit the size of removableFieldTags if record size is too big");
         System.exit(1);
     }
@@ -124,7 +125,7 @@ public class Xml2Isis {
             if ((cur % tell) == 0) {
                 System.out.println("+++ " + cur + " : "
                    + curFile.getCanonicalPath() + " ("
-                   + time.getTime().toString() + ")");
+                   + time.getTime() + ")");
             }
             cur++;
             walker = new StaxXmlWalker(curFile, tree, writer,
