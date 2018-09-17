@@ -166,7 +166,6 @@ class StaxXmlWalker {
                     curLevel++;
                     if (curLevel < skipLevel) {
                         qname = parser.getName();
-System.out.println("abrindo:" + qname + " curLevel:" + curLevel);
                         prefix = qname.getPrefix();
                         name = (prefix.isEmpty() ?  "" : (prefix + ":"))
                                                          + qname.getLocalPart();
@@ -234,7 +233,6 @@ System.out.println("abrindo:" + qname + " curLevel:" + curLevel);
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:
-System.out.println("fechando: curLevel:" + curLevel);
                     if (curLevel < skipLevel) {
                         if (skipLevel == Integer.MAX_VALUE) {
                             saveContent(current);
