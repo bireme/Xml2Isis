@@ -1,3 +1,9 @@
+/*=========================================================================
+
+    Xml2Isis © Pan American Health Organization, 2018.
+    See License at: https://github.com/bireme/Xml2Isis/blob/master/LICENSE.txt
+
+  ==========================================================================*/
 /*
  * StaxXmlWalker.java
  *
