@@ -58,7 +58,7 @@ public class XPathTree {
             assert elem != null;
 
             if (children == null) {
-                children = new LinkedHashMap < String, TreeElement >();
+                children = new LinkedHashMap <>();
             }
             children.put(elem.getName(), elem);
         }

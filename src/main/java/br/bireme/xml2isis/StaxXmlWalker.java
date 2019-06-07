@@ -17,11 +17,9 @@ import bruma.BrumaException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLInputFactory;
@@ -45,35 +43,13 @@ class StaxXmlWalker {
     private String fileName;
     private boolean createMissFld;
     private boolean createFileNameFld;
-
-    StaxXmlWalker(final File xml,
-                  final XPathTree xpath,
-                  final IsisWriter writer,
-                  final boolean createMissFld) throws XMLStreamException,
-                                                            IOException {
-        if (xml == null) {
-            throw new IllegalArgumentException();
-        }
-        if (xpath == null) {
-            throw new IllegalArgumentException();
-        }
-        if (writer == null) {
-            throw new IllegalArgumentException();
-        }
-
-        this.xpath = xpath;
-        this.writer = writer;
-        this.parser = XMLInputFactory.newInstance().createXMLStreamReader(
-                            new ReplaceBufferedReader(new FileReader(xml)));
-        this.fileName = xml.getCanonicalPath();
-        this.createMissFld = createMissFld;
-        this.createFileNameFld = false;
-    }
+    private boolean allowSubElems;
 
     StaxXmlWalker(final File xml,
                   final XPathTree xpath,
                   final IsisWriter writer,
                   final boolean createMissFld,
+                  final boolean allowSubElems,   // include subelements inside a element, f ex, <abstract>xxx <b>cc</b> yyy</abstract>
                   final String encoding) throws XMLStreamException,
                                                 IOException {
         if (xml == null) {
@@ -106,34 +82,7 @@ class StaxXmlWalker {
                        new InputStreamReader(new FileInputStream(xml), enc)));
         this.fileName = xml.getCanonicalPath();
         this.createMissFld = createMissFld;
-        this.createFileNameFld = false;
-    }
-
-    StaxXmlWalker(final String xml,
-                  final XPathTree xpath,
-                  final IsisWriter writer,
-                  final boolean createMissFld) throws XMLStreamException {
-        if (xml == null) {
-            throw new IllegalArgumentException();
-        }
-        if (xpath == null) {
-            throw new IllegalArgumentException();
-        }
-        if (writer == null) {
-            throw new IllegalArgumentException();
-        }
-
-        final XMLInputFactory factory = XMLInputFactory.newInstance();
-
-        factory.setProperty("javax.xml.stream.isReplacingEntityReferences",//XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES,
-                                                                 //Boolean.TRUE);
-                                                                 Boolean.FALSE);
-        this.xpath = xpath;
-        this.writer = writer;
-        this.parser = factory.createXMLStreamReader(
-                                    new BufferedReader(new StringReader(xml)));
-        this.fileName = "STRING";
-        this.createMissFld = createMissFld;
+        this.allowSubElems = allowSubElems;
         this.createFileNameFld = false;
     }
 
@@ -191,6 +140,14 @@ class StaxXmlWalker {
                         } else { // it is a child node
                             aux = current.getChild(name);
                             if (aux == null) { // no' que nao interessa
+                                if (allowSubElems) {
+                                    builder = current.getContent();
+                                    if (builder == null) {
+                                        builder = new StringBuilder();
+                                        current.setContent(builder);
+                                    }
+                                    builder.append("<" + name + ">");
+                                }
                                 skipLevel = curLevel + 1;
                             } else {
                                 current = aux;
@@ -201,6 +158,13 @@ class StaxXmlWalker {
                                 current.setVisited(true);
                             }
                         }
+                    } else if (allowSubElems) {
+                        builder = current.getContent();
+                        if (builder == null) {
+                            builder = new StringBuilder();
+                            current.setContent(builder);
+                        }
+                        builder.append("<" + parser.getLocalName() + ">");
                     }
                     break;
 
@@ -225,13 +189,22 @@ class StaxXmlWalker {
                                     builder = new StringBuilder();
                                     current.setContent(builder);
                                 }
-                                if ((builder.length() > 0) &&
-                                   (!Character.isSpaceChar(buffer.charAt(0)))) {
-                                    builder.append(" ");
-                                }
                                 //builder.append(buffer);
                                 builder.append(buffer.replace(
                                                      (char)REPLACE_CHAR, '&'));
+                            }
+                        }
+                    } else if (allowSubElems) {
+                        if (current.getTag() != XPathTree.NULL_TAG) {
+                            buffer = parser.getText();
+                            if (!buffer.isEmpty()) {
+                                builder = current.getContent();
+                                if (builder == null) {
+                                    builder = new StringBuilder();
+                                    current.setContent(builder);
+                                }
+                                builder.append(buffer.replace(
+                                        (char) REPLACE_CHAR, '&'));
                             }
                         }
                     }
@@ -239,6 +212,7 @@ class StaxXmlWalker {
                     break;
 
                 case XMLStreamConstants.END_ELEMENT:
+                    buffer = parser.getLocalName();
                     if (curLevel < skipLevel) {
                         if (skipLevel == Integer.MAX_VALUE) {
                             saveContent(current);
@@ -265,8 +239,23 @@ class StaxXmlWalker {
                                 current = current.getFather();
                             }
                         } else {  // reset skipLevel
+                            if (allowSubElems) {
+                                builder = current.getContent();
+                                if (builder == null) {
+                                    builder = new StringBuilder();
+                                    current.setContent(builder);
+                                }
+                                builder.append("</" + buffer + ">");
+                            }
                             skipLevel = Integer.MAX_VALUE;
                         }
+                    } else if (allowSubElems) {
+                        builder = current.getContent();
+                        if (builder == null) {
+                            builder = new StringBuilder();
+                            current.setContent(builder);
+                        }
+                        builder.append("</" + buffer + ">");
                     }
                     curLevel--;
                     break;
@@ -365,9 +354,7 @@ class ReplaceBufferedReader extends BufferedReader {
     ReplaceBufferedReader(Reader in) {
         super(in);
     }
-    ReplaceBufferedReader(Reader in, int sz) {
-        super(in, sz);
-    }
+
     @Override
     public int read() throws IOException {
         int val = super.read();
@@ -380,11 +367,9 @@ class ReplaceBufferedReader extends BufferedReader {
                     int off,
                     int len) throws IOException {
         int val = super.read(cbuf, off, len);
-        if (cbuf != null) {
-            for (int blen = 0; blen < len; blen++) {
-                if (cbuf[off + blen] == '&') {
-                    cbuf[off + blen] = StaxXmlWalker.REPLACE_CHAR;
-                }
+        for (int blen = 0; blen < len; blen++) {
+            if (cbuf[off + blen] == '&') {
+                cbuf[off + blen] = StaxXmlWalker.REPLACE_CHAR;
             }
         }
         return val;

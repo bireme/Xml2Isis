@@ -44,6 +44,7 @@ public class Xml2Isis {
                          +  "                outDb=<name> => output Isis database\n"
                          +  "                [--createMissingFields] => create an empty field if the xml element was not found\n"
                          +  "                [--createFileNameField] => create a record field with the name of the file from where the document comes\n"
+                         +  "                [--allowSubElements] => include xml subelements as part of the element text content\n"
                          +  "                [fileEncoding=<encoding>] => the encoding of the xml files \n"
                          +  "                [dbEncoding=<encoding>] => the encoding of the output database\n"
                          +  "                [tell=<number>] => prints an message each <number> documents processed\n"
@@ -73,6 +74,7 @@ public class Xml2Isis {
         String dbEncoding = null;
         boolean createMissFld = false;
         boolean createFilNameFld = false;
+        boolean allowSubElements = false;
         String parm;
         StaxXmlWalker walker;
         int tell = 1;
@@ -94,6 +96,8 @@ public class Xml2Isis {
                 createMissFld = true;
             } else if (parm.compareTo("--createFileNameField") == 0) {
                 createFilNameFld = true;
+            } else if (parm.compareTo("--allowSubElements") == 0) {
+                allowSubElements = true;
             } else if (parm.startsWith("fileEncoding=")) {
                 fileEncoding = parm.substring(13);
             } else if (parm.startsWith("dbEncoding=")) {
@@ -136,7 +140,7 @@ public class Xml2Isis {
             }
             cur++;
             walker = new StaxXmlWalker(curFile, tree, writer,
-                                                  createMissFld, fileEncoding);
+                                       createMissFld, allowSubElements, fileEncoding);
             walker.createFileNameField(createFilNameFld);
             walker.convert();
             walker.close();
