@@ -70,8 +70,8 @@ public class Xml2Isis {
         String regExp = null;
         String table = null;
         String outDb = null;
-        String fileEncoding = null;
-        String dbEncoding = null;
+        String fileEncoding = "iso-8859-1";
+        String dbEncoding = "iso-8859-1";
         boolean createMissFld = false;
         boolean createFilNameFld = false;
         boolean allowSubElements = false;
